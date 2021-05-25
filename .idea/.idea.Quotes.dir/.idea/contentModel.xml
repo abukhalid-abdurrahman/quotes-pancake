@@ -11,10 +11,14 @@
         <e p="QuotesController.cs" t="Include" />
       </e>
       <e p="Model" t="Include">
-        <e p="Request" t="Include" />
-        <e p="Response" t="Include">
-          <e p="QuoteResponse.cs" t="Include" />
-          <e p="Response.cs" t="Include" />
+        <e p="DTOs" t="Include">
+          <e p="Request" t="Include" />
+          <e p="Response" t="Include">
+            <e p="AuthorResponse.cs" t="Include" />
+            <e p="CategoryResponse.cs" t="Include" />
+            <e p="QuoteResponse.cs" t="Include" />
+            <e p="Response.cs" t="Include" />
+          </e>
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive">

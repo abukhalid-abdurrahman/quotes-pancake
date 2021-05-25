@@ -1,4 +1,4 @@
-﻿namespace Quotes.Model.Response
+﻿namespace Quotes.Model.DTOs.Response
 {
     public abstract class Response
     {

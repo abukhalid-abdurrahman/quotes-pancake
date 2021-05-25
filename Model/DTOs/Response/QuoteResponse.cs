@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quotes.Model.Response
+namespace Quotes.Model.DTOs.Response
 {
     public class QuoteResponse : Response
     {
@@ -10,8 +10,5 @@ namespace Quotes.Model.Response
         public string QuoteText { get; set; }
         public string CategoryText { get; set; }
         public string AuthorName { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
-        public bool Removed { get; set; }
     }
 }
