@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\DTOs\Request" />
     <Folder Include="Schema" />
   </ItemGroup>
 

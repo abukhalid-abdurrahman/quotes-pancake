@@ -12,7 +12,11 @@
       </e>
       <e p="Model" t="Include">
         <e p="DTOs" t="Include">
-          <e p="Request" t="Include" />
+          <e p="Request" t="Include">
+            <e p="AuthorRequest.cs" t="Include" />
+            <e p="CategoryRequest.cs" t="Include" />
+            <e p="QuoteRequest.cs" t="Include" />
+          </e>
           <e p="Response" t="Include">
             <e p="AuthorResponse.cs" t="Include" />
             <e p="CategoryResponse.cs" t="Include" />
