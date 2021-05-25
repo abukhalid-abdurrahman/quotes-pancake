@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace Quotes.DataAccess.Interfaces
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<in T, TK>
     {
-        Task<T> GetByIdAsync(int id);
-        Task<IReadOnlyList<T>> GetAllAsync();
-        Task<T> AddAsync(T entity);
-        Task<T> UpdateAsync(T entity);
-        Task<T> RemoveAsync(int id);
+        Task<TK> GetByIdAsync(int id);
+        Task<IReadOnlyList<TK>> GetAllAsync();
+        Task<TK> AddAsync(T entity);
+        Task<TK> UpdateAsync(T entity);
+        Task<TK> RemoveAsync(int id);
     }
 }
