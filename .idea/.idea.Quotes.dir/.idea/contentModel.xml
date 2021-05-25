@@ -23,7 +23,9 @@
         <e p="launchSettings.json" t="Include" />
       </e>
       <e p="Quotes.csproj" t="IncludeRecursive" />
-      <e p="Schema" t="Include" />
+      <e p="Schema" t="Include">
+        <e p="quotes_db.sql" t="Include" />
+      </e>
       <e p="Startup.cs" t="Include" />
     </e>
   </component>

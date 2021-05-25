@@ -1,5 +1,3 @@
-DROP DATABASE db_quotes;
-
 CREATE DATABASE db_quotes
     WITH 
     OWNER = postgres
@@ -9,7 +7,6 @@ CREATE DATABASE db_quotes
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 	
-DROP TABLE public.authors;
 
 CREATE TABLE public.authors
 (
@@ -17,15 +14,8 @@ CREATE TABLE public.authors
     name character varying(50) COLLATE pg_catalog."default" NOT NULL,
     removed boolean NOT NULL DEFAULT false,
     CONSTRAINT authors_pkey PRIMARY KEY (id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.authors
-    OWNER to postgres;
-	
-DROP TABLE public.tokens;	
-	
+);
+		
 CREATE TABLE public.tokens
 (
 	author_id integer NOT NULL,
@@ -37,10 +27,14 @@ CREATE TABLE public.tokens
         NOT VALID
 );
 
-ALTER TABLE public.tokens
-    OWNER to postgres;
-
--- DROP TABLE public.quotes;
+CREATE TABLE public.categories
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    category character varying(50) NOT NULL,
+	removed boolean NOT NULL DEFAULT false,
+    insertdate date NOT NULL DEFAULT CURRENT_DATE,
+    CONSTRAINT pk_categories PRIMARY KEY (id),
+);
 
 CREATE TABLE public.quotes
 (
@@ -60,15 +54,7 @@ CREATE TABLE public.quotes
         REFERENCES public.categories (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.quotes
-    OWNER to postgres;
-
-
--- DROP TABLE public.quotes_history;
+);
 
 CREATE TABLE public.quotes_history
 (
@@ -86,29 +72,19 @@ CREATE TABLE public.quotes_history
         REFERENCES public.quotes (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE public.quotes_history
+ALTER TABLE public.authors
     OWNER to postgres;
-
-
-DROP TABLE public.categories;
-
-CREATE TABLE public.categories
-(
-    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    category character varying(50) NOT NULL,
-	removed boolean NOT NULL DEFAULT false,
-    insertdate date NOT NULL DEFAULT CURRENT_DATE,
-    CONSTRAINT pk_categories PRIMARY KEY (id),
-)
-
-TABLESPACE pg_default;
+	
+ALTER TABLE public.tokens
+    OWNER to postgres;
+	
+ALTER TABLE public.categories
+    OWNER to postgres;
 
 ALTER TABLE public.quotes
     OWNER to postgres;
 	
-ALTER TABLE public.categories
+ALTER TABLE public.quotes_history
     OWNER to postgres;
