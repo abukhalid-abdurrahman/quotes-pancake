@@ -33,7 +33,7 @@ CREATE TABLE public.categories
     category character varying(50) NOT NULL,
 	removed boolean NOT NULL DEFAULT false,
     insertdate date NOT NULL DEFAULT CURRENT_DATE,
-    CONSTRAINT pk_categories PRIMARY KEY (id),
+    CONSTRAINT pk_categories PRIMARY KEY (id)
 );
 
 CREATE TABLE public.quotes

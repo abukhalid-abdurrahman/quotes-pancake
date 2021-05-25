@@ -10,6 +10,12 @@
       <e p="Controllers" t="Include">
         <e p="QuotesController.cs" t="Include" />
       </e>
+      <e p="DataAccess" t="Include">
+        <e p="Interfaces" t="Include">
+          <e p="IGenericRepository.cs" t="Include" />
+        </e>
+        <e p="Repositories" t="Include" />
+      </e>
       <e p="Model" t="Include">
         <e p="DTOs" t="Include">
           <e p="Request" t="Include">
