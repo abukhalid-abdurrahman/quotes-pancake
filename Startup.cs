@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Quotes.Infrastructure;
 
 namespace Quotes
 {
@@ -16,6 +17,7 @@ namespace Quotes
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddInfrastructure();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

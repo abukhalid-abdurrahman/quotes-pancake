@@ -19,6 +19,13 @@
           <e p="QuoteRepository.cs" t="Include" />
         </e>
       </e>
+      <e p="Infrastructure" t="Include">
+        <e p="ServiceRegistration.cs" t="Include" />
+        <e p="Services" t="Include">
+          <e p="IUnitOfWork.cs" t="Include" />
+          <e p="UnitOfWork.cs" t="Include" />
+        </e>
+      </e>
       <e p="Model" t="Include">
         <e p="DTOs" t="Include">
           <e p="Request" t="Include">
