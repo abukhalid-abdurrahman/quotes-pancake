@@ -9,7 +9,7 @@ using Quotes.Model.DTOs.Response;
 
 namespace Quotes.DataAccess.Repositories
 {
-    public class QuoteRepository : IGenericRepository<QuoteRequest, QuoteResponse>, IQuoteRepository
+    public class QuoteRepository : IQuoteRepository
     {
         private readonly IConfiguration _configuration;
         
