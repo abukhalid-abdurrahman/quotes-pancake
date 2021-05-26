@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,24 @@ namespace Quotes.DataAccess.Repositories
             var author = await connection.QueryFirstOrDefaultAsync<AuthorResponse>(authorQuery, new { AuthorId = authorId });
             await connection.CloseAsync();
             return author;
+        }
+
+        public async Task<bool> CheckAuthorToken(int authorId, string hmacStr)
+        {
+            var query = $"SELECT token FROM public.tokens WHERE author_id=@AuthorId;";
+            
+            await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            await connection.OpenAsync();
+            var authorToken = await connection.ExecuteScalarAsync<string>(query, new { AuthorId = authorId });
+            await connection.CloseAsync();
+            
+            var shaKeyBytes = System.Text.Encoding.UTF8.GetBytes(authorToken);
+            using var shaAlgorithm = new HMACSHA256(shaKeyBytes);
+            var signatureBytes = System.Text.Encoding.UTF8.GetBytes(authorId + authorToken);
+            var signatureHashBytes = shaAlgorithm.ComputeHash(signatureBytes);
+            var signatureHashHex = string.Concat(Array.ConvertAll(signatureHashBytes, b => b.ToString("X2")));
+
+            return signatureHashHex.ToLower() == hmacStr.ToLower();
         }
     }
 }

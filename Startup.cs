@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Quotes.Infrastructure;
+using Quotes.Infrastructure.Middleware;
 
 namespace Quotes
 {
@@ -33,9 +34,9 @@ namespace Quotes
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Quotes v1"));
             }
-            
+
+            app.UseMiddleware<MessageDigestMiddleware>();
             app.UseRouting();
-            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

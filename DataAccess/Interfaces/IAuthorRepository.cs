@@ -7,5 +7,6 @@ namespace Quotes.DataAccess.Interfaces
     public interface IAuthorRepository
     {
         Task<AuthorResponse> AddAsync(AuthorRequest entity);
+        Task<bool> CheckAuthorToken(int userId, string hmac);
     }
 }

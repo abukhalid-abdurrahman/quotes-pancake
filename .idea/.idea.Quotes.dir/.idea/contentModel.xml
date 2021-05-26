@@ -23,6 +23,9 @@
         </e>
       </e>
       <e p="Infrastructure" t="Include">
+        <e p="Middleware" t="Include">
+          <e p="MessageDigestMiddleware.cs" t="Include" />
+        </e>
         <e p="ServiceRegistration.cs" t="Include" />
         <e p="Services" t="Include">
           <e p="IUnitOfWork.cs" t="Include" />
