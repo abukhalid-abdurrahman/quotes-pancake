@@ -31,8 +31,14 @@
         </e>
         <e p="ServiceRegistration.cs" t="Include" />
         <e p="Services" t="Include">
-          <e p="IUnitOfWork.cs" t="Include" />
-          <e p="UnitOfWork.cs" t="Include" />
+          <e p="Statistics" t="Include">
+            <e p="IQuoteStatistics.cs" t="Include" />
+            <e p="QuoteStatistics.cs" t="Include" />
+          </e>
+          <e p="UnitOfWork" t="Include">
+            <e p="IUnitOfWork.cs" t="Include" />
+            <e p="UnitOfWork.cs" t="Include" />
+          </e>
         </e>
       </e>
       <e p="Model" t="Include">
@@ -46,6 +52,7 @@
             <e p="AuthorResponse.cs" t="Include" />
             <e p="CategoryResponse.cs" t="Include" />
             <e p="QuoteResponse.cs" t="Include" />
+            <e p="QuoteStatisticsResponse.cs" t="Include" />
           </e>
         </e>
       </e>

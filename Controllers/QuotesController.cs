@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Quotes.Infrastructure.Attributes;
 using Quotes.Infrastructure.Services;
+using Quotes.Infrastructure.Services.Statistics;
 using Quotes.Model.DTOs.Request;
 using Quotes.Model.DTOs.Response;
 
@@ -14,9 +15,12 @@ namespace Quotes.Controllers
     public class QuotesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public QuotesController(IUnitOfWork unitOfWork)
+        private readonly IQuoteStatistics _statistics;
+
+        public QuotesController(IUnitOfWork unitOfWork, IQuoteStatistics statistics)
         {
             _unitOfWork = unitOfWork;
+            _statistics = statistics;
         }
         
         [HttpGet]
@@ -24,6 +28,13 @@ namespace Quotes.Controllers
         {
             return await _unitOfWork.QuoteRepository.GetAllAsync();
         }
+        
+        [HttpGet("Statistics/{url}")]
+        public IActionResult GetStatistics(string url)
+        {
+            _statistics.SendStatistics(url);
+            return Ok(new { message = "OK, I got you, Sir!" });
+        }  
         
         [HttpGet("{id}")]
         public async Task<QuoteResponse> Get(int id)
@@ -54,7 +65,7 @@ namespace Quotes.Controllers
         {
             return await _unitOfWork.QuoteRepository.AddAsync(quoteRequest);
         }
-        
+
         [HttpPut]
         public async Task<QuoteResponse> Edit(QuoteRequest quoteRequest)
         {

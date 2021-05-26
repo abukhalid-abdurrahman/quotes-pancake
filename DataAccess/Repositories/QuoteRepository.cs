@@ -143,5 +143,15 @@ namespace Quotes.DataAccess.Repositories
             await connection.CloseAsync();
             return quote as IReadOnlyList<QuoteResponse>;
         }
+
+        public async Task<IReadOnlyList<QuoteStatisticsResponse>> GetStatistics()
+        {
+            var query = $"";
+            await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            await connection.OpenAsync();
+            var quote = await connection.QueryAsync<QuoteStatisticsResponse>(query);
+            await connection.CloseAsync();
+            return quote as IReadOnlyList<QuoteStatisticsResponse>;
+        }
     }
 }
