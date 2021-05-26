@@ -9,16 +9,16 @@ using Quotes.Model.DTOs.Response;
 
 namespace Quotes.DataAccess.Repositories
 {
-    public class QuoteRepository : IQuoteRepository
+    public class AuthorRepository : IGenericRepository<AuthorRequest, AuthorResponse>
     {
         private readonly IConfiguration _configuration;
         
-        public QuoteRepository(IConfiguration configuration)
+        public AuthorRepository(IConfiguration configuration)
         {
             _configuration = configuration;
         }
         
-        public async Task<QuoteResponse> GetByIdAsync(int id)
+        public async Task<AuthorResponse> GetByIdAsync(int id)
         {
             var query = $"SELECT " +
                         $"q.quote AS QuoteText, " +
@@ -33,12 +33,12 @@ namespace Quotes.DataAccess.Repositories
                         $"WHERE q.removed = False AND a.removed = False AND c.removed = False AND q.id = @quoteId;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
-            var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query, new { quoteId = id });
+            var quote = await connection.QueryFirstOrDefaultAsync<AuthorResponse>(query, new { quoteId = id });
             await connection.CloseAsync();
             return quote;
         }
 
-        public async Task<IReadOnlyList<QuoteResponse>> GetAllAsync()
+        public async Task<IReadOnlyList<AuthorResponse>> GetAllAsync()
         {
             var query = $"SELECT " +
                         $"q.quote AS QuoteText, " +
@@ -53,12 +53,12 @@ namespace Quotes.DataAccess.Repositories
                         $"WHERE q.removed = False AND a.removed=False AND c.removed = False;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
-            var quotes = await connection.QueryAsync<QuoteResponse>(query);
+            var quotes = await connection.QueryAsync<AuthorResponse>(query);
             await connection.CloseAsync();
-            return quotes as IReadOnlyList<QuoteResponse>;
+            return quotes as IReadOnlyList<AuthorResponse>;
         }
 
-        public async Task<QuoteResponse> AddAsync(QuoteRequest entity)
+        public async Task<AuthorResponse> AddAsync(AuthorRequest entity)
         {
             var query = $"INSERT INTO public.quotes(quote, " +
                         $"category_id, " +
@@ -69,12 +69,12 @@ namespace Quotes.DataAccess.Repositories
                         $"@AuthorId) RETURNING *;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
-            var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query, entity);
+            var quote = await connection.QueryFirstOrDefaultAsync<AuthorResponse>(query, entity);
             await connection.CloseAsync();
             return quote;
         }
 
-        public async Task<QuoteResponse> UpdateAsync(QuoteRequest entity)
+        public async Task<AuthorResponse> UpdateAsync(AuthorRequest entity)
         {
             var query = $"UPDATE public.quotes " +
                         $"SET quote=@QuoteText, " +
@@ -84,12 +84,12 @@ namespace Quotes.DataAccess.Repositories
                         $"WHERE id=@QuoteId RETURNING *;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
-            var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query, entity);
+            var quote = await connection.QueryFirstOrDefaultAsync<AuthorResponse>(query, entity);
             await connection.CloseAsync();
-            return quote;        
+            return quote;
         }
 
-        public async Task<QuoteResponse> RemoveAsync(int id)
+        public async Task<AuthorResponse> RemoveAsync(int id)
         {
             var query = $"UPDATE public.quotes " +
                         $"SET removed=True," +
@@ -97,51 +97,9 @@ namespace Quotes.DataAccess.Repositories
                         $"WHERE id=@QuoteId RETURNING *;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
-            var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query, new { QuoteId = id });
+            var quote = await connection.QueryFirstOrDefaultAsync<AuthorResponse>(query, new { QuoteId = id });
             await connection.CloseAsync();
             return quote;
-        }
-
-        public async Task<QuoteResponse> GetRandomQuote()
-        {
-            var query = $"SELECT " +
-                        $"q.quote AS QuoteText, " +
-                        $"q.id AS Id, " +
-                        $"q.category_id AS CategoryId, " +
-                        $"q.author_id AS AuthorId, " +
-                        $"a.name AS AuthorName, " +
-                        $"c.category AS CategoryText " +
-                        $"FROM public.quotes q " +
-                        $"LEFT JOIN public.authors a ON a.id = q.author_id " +
-                        $"LEFT JOIN public.categories c ON c.id = q.category_id " +
-                        $"WHERE q.removed = False AND a.removed=False AND c.removed = False " +
-                        $"ORDER BY RANDOM() " +
-                        $"LIMIT 1;";
-            await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            await connection.OpenAsync();
-            var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query);
-            await connection.CloseAsync();
-            return quote;
-        }
-
-        public async Task<IReadOnlyList<QuoteResponse>> GetQuotesByCategory(int id)
-        {
-            var query = $"SELECT " +
-                        $"q.quote AS QuoteText, " +
-                        $"q.id AS Id, " +
-                        $"q.category_id AS CategoryId, " +
-                        $"q.author_id AS AuthorId, " +
-                        $"a.name AS AuthorName, " +
-                        $"c.category AS CategoryText " +
-                        $"FROM public.quotes q " +
-                        $"LEFT JOIN public.authors a ON a.id = q.author_id " +
-                        $"LEFT JOIN public.categories c ON c.id = q.category_id " +
-                        $"WHERE q.removed = False AND a.removed = False AND c.removed = False AND c.id = @categoryId;";
-            await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            await connection.OpenAsync();
-            var quote = await connection.QueryAsync<QuoteResponse>(query, new { categoryId = id });
-            await connection.CloseAsync();
-            return quote as IReadOnlyList<QuoteResponse>;
         }
     }
 }

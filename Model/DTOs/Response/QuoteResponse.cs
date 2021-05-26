@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Quotes.Model.DTOs.Response
+﻿namespace Quotes.Model.DTOs.Response
 {
-    public class QuoteResponse : Response
+    public class QuoteResponse
     {
         public int Id { get; set; }
         public int CategoryId { get; set; }

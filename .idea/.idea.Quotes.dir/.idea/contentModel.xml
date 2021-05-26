@@ -16,6 +16,7 @@
           <e p="IQuoteRepository.cs" t="Include" />
         </e>
         <e p="Repositories" t="Include">
+          <e p="AuthorRepository.cs" t="Include" />
           <e p="QuoteRepository.cs" t="Include" />
         </e>
       </e>
@@ -37,7 +38,6 @@
             <e p="AuthorResponse.cs" t="Include" />
             <e p="CategoryResponse.cs" t="Include" />
             <e p="QuoteResponse.cs" t="Include" />
-            <e p="Response.cs" t="Include" />
           </e>
         </e>
       </e>

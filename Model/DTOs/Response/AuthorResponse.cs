@@ -1,6 +1,6 @@
 ﻿namespace Quotes.Model.DTOs.Response
 {
-    public class AuthorResponse : Response
+    public class AuthorResponse
     {
         public int Id { get; set; }
         public string AuthorName { get; set; }
