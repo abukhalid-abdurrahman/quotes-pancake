@@ -9,6 +9,7 @@ namespace Quotes.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services)
         {
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IQuoteRepository, QuoteRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }

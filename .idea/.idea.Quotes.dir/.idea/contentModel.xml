@@ -8,10 +8,12 @@
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="Controllers" t="Include">
+        <e p="AuthorController.cs" t="Include" />
         <e p="QuotesController.cs" t="Include" />
       </e>
       <e p="DataAccess" t="Include">
         <e p="Interfaces" t="Include">
+          <e p="IAuthorRepository.cs" t="Include" />
           <e p="IGenericRepository.cs" t="Include" />
           <e p="IQuoteRepository.cs" t="Include" />
         </e>
