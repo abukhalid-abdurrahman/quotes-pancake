@@ -66,11 +66,12 @@ namespace Quotes.DataAccess.Repositories
                         $"VALUES " +
                         $"(@QuoteText," +
                         $"@CategoryId," +
-                        $"@AuthorId) RETURNING *;";
+                        $"@AuthorId) RETURNING id AS Id, author_id AS AuthorId, quote AS QuoteText, category_id AS CategoryId;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
             var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query, entity);
             await connection.CloseAsync();
+            await CreateStatistics(quote.Id, quote.AuthorId, "created");
             return quote;
         }
 
@@ -94,11 +95,12 @@ namespace Quotes.DataAccess.Repositories
             var query = $"UPDATE public.quotes " +
                         $"SET removed=True," +
                         $"\"updateDate\"=CURRENT_DATE " +
-                        $"WHERE id=@QuoteId RETURNING *;";
+                        $"WHERE id=@QuoteId RETURNING id AS Id, author_id AS AuthorId, quote AS QuoteText, category_id AS CategoryId;";
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
             var quote = await connection.QueryFirstOrDefaultAsync<QuoteResponse>(query, new { QuoteId = id });
             await connection.CloseAsync();
+            await CreateStatistics(quote.Id, quote.AuthorId, "removed");
             return quote;
         }
 
@@ -146,12 +148,34 @@ namespace Quotes.DataAccess.Repositories
 
         public async Task<IReadOnlyList<QuoteStatisticsResponse>> GetStatistics()
         {
-            var query = $"";
+            var query = $@"SELECT qh.quote_id AS Id,
+	                              qh.action AS Action,
+	                              qh.""insertDate"" AS ActionDate,
+                                  a.name AS AuthorName,
+                                  a.id AS AuthorId,
+                                  c.category AS CategoryText,
+                                  c.id AS CategoryId,
+                                  q.quote AS QuoteText
+                                FROM quotes_history qh
+                                LEFT JOIN quotes q ON q.id = qh.quote_id
+                                LEFT JOIN authors a ON a.id = qh.author_id
+                                LEFT JOIN categories c ON c.id = q.category_id
+                                ORDER BY qh.""insertDate"" DESC;";
+            
             await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await connection.OpenAsync();
-            var quote = await connection.QueryAsync<QuoteStatisticsResponse>(query);
+            var quotes = await connection.QueryAsync<QuoteStatisticsResponse>(query);
             await connection.CloseAsync();
-            return quote as IReadOnlyList<QuoteStatisticsResponse>;
+            return quotes as IReadOnlyList<QuoteStatisticsResponse>;
+        }
+
+        public async Task CreateStatistics(int quoteId, int authorId, string action)
+        {
+            var query = $"INSERT INTO public.quotes_history(quote_id, action, author_id) VALUES (@QuoteId, @Action, @AuthorId);";
+            await using var connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            await connection.OpenAsync();
+            await connection.ExecuteAsync(query, new { QuoteId = quoteId, AuthorId = authorId, Action = action });
+            await connection.CloseAsync();
         }
     }
 }

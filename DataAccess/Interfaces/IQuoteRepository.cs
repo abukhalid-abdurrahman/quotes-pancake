@@ -10,6 +10,6 @@ namespace Quotes.DataAccess.Interfaces
         Task<QuoteResponse> GetRandomQuote();
         Task<IReadOnlyList<QuoteResponse>> GetQuotesByCategory(int categoryId);
         Task<IReadOnlyList<QuoteStatisticsResponse>> GetStatistics();
-
+        Task CreateStatistics(int quoteId, int authorId, string action);
     }
 }

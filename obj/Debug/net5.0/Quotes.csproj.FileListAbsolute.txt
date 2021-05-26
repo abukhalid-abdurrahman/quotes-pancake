@@ -40,3 +40,4 @@ E:\Faridun's Projects\Alif Technologies\Quotes\obj\Debug\net5.0\Quotes.dll
 E:\Faridun's Projects\Alif Technologies\Quotes\obj\Debug\net5.0\ref\Quotes.dll
 E:\Faridun's Projects\Alif Technologies\Quotes\obj\Debug\net5.0\Quotes.pdb
 E:\Faridun's Projects\Alif Technologies\Quotes\obj\Debug\net5.0\Quotes.genruntimeconfig.cache
+E:\Faridun's Projects\Alif Technologies\Quotes\bin\Debug\net5.0\Newtonsoft.Json.dll
