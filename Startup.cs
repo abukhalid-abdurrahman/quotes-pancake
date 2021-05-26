@@ -35,7 +35,6 @@ namespace Quotes
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Quotes v1"));
             }
 
-            app.UseMiddleware<MessageDigestMiddleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

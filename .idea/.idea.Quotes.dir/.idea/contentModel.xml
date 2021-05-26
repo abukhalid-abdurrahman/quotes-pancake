@@ -23,6 +23,9 @@
         </e>
       </e>
       <e p="Infrastructure" t="Include">
+        <e p="Attributes" t="Include">
+          <e p="MessageDigestAttribute.cs" t="Include" />
+        </e>
         <e p="Middleware" t="Include">
           <e p="MessageDigestMiddleware.cs" t="Include" />
         </e>

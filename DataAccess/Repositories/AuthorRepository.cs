@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -48,14 +47,16 @@ namespace Quotes.DataAccess.Repositories
             await connection.OpenAsync();
             var authorToken = await connection.ExecuteScalarAsync<string>(query, new { AuthorId = authorId });
             await connection.CloseAsync();
+
+            if (string.IsNullOrEmpty(authorToken))
+                return false;
             
             var shaKeyBytes = System.Text.Encoding.UTF8.GetBytes(authorToken);
             using var shaAlgorithm = new HMACSHA256(shaKeyBytes);
             var signatureBytes = System.Text.Encoding.UTF8.GetBytes(authorId + authorToken);
             var signatureHashBytes = shaAlgorithm.ComputeHash(signatureBytes);
             var signatureHashHex = string.Concat(Array.ConvertAll(signatureHashBytes, b => b.ToString("X2")));
-
-            return signatureHashHex.ToLower() == hmacStr.ToLower();
+            return string.Equals(signatureHashHex, hmacStr, StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }

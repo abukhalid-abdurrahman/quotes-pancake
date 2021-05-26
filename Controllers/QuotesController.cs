@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Quotes.Infrastructure.Attributes;
 using Quotes.Infrastructure.Services;
 using Quotes.Model.DTOs.Request;
 using Quotes.Model.DTOs.Response;
@@ -9,6 +10,7 @@ namespace Quotes.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [ServiceFilter(typeof(MessageDigestAttribute))]
     public class QuotesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
